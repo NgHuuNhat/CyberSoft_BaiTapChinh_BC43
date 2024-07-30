@@ -1,0 +1,221 @@
+drop database if exists bt_3_app_food;
+
+create database bt_3_app_food;
+
+use bt_3_app_food;
+
+-- Tạo bảng 
+
+CREATE TABLE users (
+    user_id INT PRIMARY KEY AUTO_INCREMENT,
+    full_name VARCHAR(255),
+    email VARCHAR(255),
+    password VARCHAR(255)
+);
+
+CREATE TABLE restaurant (
+    res_id INT PRIMARY KEY AUTO_INCREMENT,
+    res_name VARCHAR(255),
+    image VARCHAR(255),
+    description VARCHAR(255)
+);
+
+CREATE TABLE rate_res (
+    rate_res_id INT PRIMARY KEY AUTO_INCREMENT,
+    amount INT,
+    date_res DATE,
+    user_id INT,
+    FOREIGN KEY (user_id) REFERENCES users(user_id),
+    res_id INT,
+    FOREIGN KEY (res_id) REFERENCES restaurant(res_id)
+);
+
+CREATE TABLE like_res (
+    like_res_id INT PRIMARY KEY AUTO_INCREMENT,
+    date_like DATE,
+    user_id INT,
+    FOREIGN KEY (user_id) REFERENCES users(user_id),
+    res_id INT,
+    FOREIGN KEY (res_id) REFERENCES restaurant(res_id)
+);
+
+create table food_type(
+	type_id int PRIMARY KEY auto_increment,
+	type_name varchar(255)
+);
+
+create table food(
+	food_id int PRIMARY key auto_increment,
+	food_name varchar(255),
+	image varchar(255),
+	price float,
+	description varchar(255),
+	type_id int,
+	FOREIGN KEY (type_id) REFERENCES food_type(type_id)
+);
+
+create table sub_food(
+	sub_id int PRIMARY KEY auto_increment,
+	sub_name varchar(255),
+	sub_price float,
+	food_id int,
+	FOREIGN KEY (food_id) REFERENCES food(food_id)
+);
+
+create table user_order(
+	user_order_id int PRIMARY KEY auto_increment,
+	amount int,
+	code varchar(255),
+	arr_sub_id varchar(255),
+	user_id int,
+	FOREIGN key (user_id) REFERENCES users(user_id)
+);
+
+-- Chèn dữ liệu 
+
+INSERT INTO users (full_name, email, password) VALUES
+('John Doe', 'john@example.com', 'password123'),
+('Jane Smith', 'jane@example.com', 'password123'),
+('Alice Johnson', 'alice@example.com', 'password123'),
+('Bob Brown', 'bob@example.com', 'password123'),
+('Charlie Davis', 'charlie@example.com', 'password123'),
+('David Evans', 'david@example.com', 'password123'),
+('Eve Foster', 'eve@example.com', 'password123'),
+('Frank Green', 'frank@example.com', 'password123'),
+('Grace Hill', 'grace@example.com', 'password123'),
+('Hank Irwin', 'hank@example.com', 'password123');
+
+INSERT INTO restaurant (res_name, image, description) VALUES
+('Pizza Palace', 'pizza.jpg', 'Best pizza in town'),
+('Burger Barn', 'burger.jpg', 'Delicious burgers'),
+('Sushi Spot', 'sushi.jpg', 'Fresh sushi daily'),
+('Taco Town', 'taco.jpg', 'Authentic tacos'),
+('Pasta Place', 'pasta.jpg', 'Homemade pasta dishes'),
+('BBQ Joint', 'bbq.jpg', 'Smoky and savory BBQ'),
+('Steak House', 'steak.jpg', 'Juicy steaks'),
+('Salad Bar', 'salad.jpg', 'Healthy salads'),
+('Dessert Den', 'dessert.jpg', 'Sweet treats and desserts'),
+('Coffee Corner', 'coffee.jpg', 'Best coffee in town');
+
+INSERT INTO like_res (date_like, user_id, res_id) VALUES
+('2023-01-01', 1, 1),
+('2023-01-02', 1, 2),
+('2023-01-03', 1, 3),
+('2023-02-01', 2, 2),
+('2023-02-02', 2, 3),
+('2023-02-03', 2, 4),
+('2023-03-01', 3, 3),
+('2023-03-02', 3, 4),
+('2023-03-03', 3, 5),
+('2023-04-01', 4, 4),
+('2023-04-02', 4, 5),
+('2023-04-03', 4, 6),
+('2023-05-01', 5, 5),
+('2023-05-02', 5, 6),
+('2023-05-03', 5, 7),
+('2023-06-01', 6, 6),
+('2023-06-02', 6, 7),
+('2023-06-03', 6, 8),
+('2023-07-01', 7, 7),
+('2023-07-02', 7, 8),
+('2023-07-03', 7, 9),
+('2023-08-01', 8, 8),
+('2023-08-02', 8, 9),
+('2023-08-03', 8, 10),
+('2023-09-01', 9, 9),
+('2023-09-02', 9, 10),
+('2023-09-03', 9, 1),
+('2023-10-01', 10, 10),
+('2023-10-02', 10, 1),
+('2023-10-03', 10, 2);
+
+INSERT INTO rate_res (amount, date_res, user_id, res_id) VALUES
+(5, '2023-01-01', 1, 1),
+(4, '2023-02-01', 2, 2),
+(3, '2023-03-01', 3, 3),
+(5, '2023-04-01', 4, 4),
+(4, '2023-05-01', 5, 5),
+(3, '2023-06-01', 6, 6),
+(5, '2023-07-01', 7, 7),
+(4, '2023-08-01', 8, 8),
+(3, '2023-09-01', 9, 9),
+(5, '2023-10-01', 10, 10);
+
+INSERT INTO food_type (type_name) VALUES
+('Italian'),
+('American'),
+('Japanese'),
+('Mexican'),
+('Chinese'),
+('Indian'),
+('French'),
+('Greek'),
+('Thai'),
+('Spanish');
+
+INSERT INTO food (food_name, image, price, description, type_id) VALUES
+('Margherita Pizza', 'margherita.jpg', 10.99, 'Classic margherita pizza', 1),
+('Cheeseburger', 'cheeseburger.jpg', 8.99, 'Juicy cheeseburger', 2),
+('Sushi Roll', 'sushi_roll.jpg', 12.99, 'Fresh sushi roll', 3),
+('Tacos', 'tacos.jpg', 9.99, 'Authentic Mexican tacos', 4),
+('Kung Pao Chicken', 'kung_pao.jpg', 11.99, 'Spicy Chinese dish', 5),
+('Butter Chicken', 'butter_chicken.jpg', 10.99, 'Rich and creamy Indian dish', 6),
+('Croissant', 'croissant.jpg', 3.99, 'Flaky French pastry', 7),
+('Gyro', 'gyro.jpg', 8.99, 'Greek gyro with tzatziki', 8),
+('Pad Thai', 'pad_thai.jpg', 10.99, 'Classic Thai noodles', 9),
+('Paella', 'paella.jpg', 14.99, 'Traditional Spanish rice dish', 10);
+
+INSERT INTO sub_food (sub_name, sub_price, food_id) VALUES
+('Extra Cheese', 1.99, 1),
+('Bacon', 2.99, 2),
+('Avocado', 1.99, 3),
+('Guacamole', 1.99, 4),
+('Spring Rolls', 3.99, 5),
+('Naan Bread', 1.99, 6),
+('Chocolate Sauce', 0.99, 7),
+('Feta Cheese', 1.99, 8),
+('Peanuts', 0.99, 9),
+('Chorizo', 2.99, 10);
+
+INSERT INTO user_order (amount, code, arr_sub_id, user_id) VALUES
+(2, 'ORDER123', '[1,2,3]', 1),
+(1, 'ORDER456', '[4,2,3]', 1),
+(1, 'ORDER789', '[1,2,3]', 2),
+(3, 'ORDER012', '[]', 3),
+(1, 'ORDER345', '[]', 3),
+(2, 'ORDER678', '[]', 4),
+(1, 'ORDER901', '[]', 5),
+(2, 'ORDER234', '[]', 6),
+(1, 'ORDER567', '[]', 7),
+(1, 'ORDER890', '[5,6,7]', 8);
+
+-- Tìm 5 người đã like nhà hàng nhiều nhất
+SELECT u.user_id, u.full_name, COUNT(lr.like_res_id) AS like_count
+FROM like_res lr
+INNER JOIN users u ON lr.user_id = u.user_id
+GROUP BY u.user_id, u.full_name
+ORDER BY like_count DESC
+LIMIT 5;
+
+-- Tìm 2 nhà hàng có lượt like nhiều nhất
+SELECT r.res_id, r.res_name, COUNT(lr.like_res_id) AS like_count
+FROM like_res lr
+INNER JOIN restaurant r ON lr.res_id = r.res_id
+GROUP BY r.res_id, r.res_name
+ORDER BY like_count DESC
+LIMIT 2;
+
+-- Tìm người đã đặt hàng nhiều nhất
+SELECT u.user_id, u.full_name, COUNT(o.user_order_id) AS order_count
+FROM user_order o
+INNER JOIN users u ON o.user_id = u.user_id
+GROUP BY u.user_id, u.full_name
+ORDER BY order_count DESC
+
+-- Tìm người dùng không hoạt động trong hệ thống (không đặt hàng, không like, không đánh giá nhà hàng)
+SELECT u.user_id, u.full_name
+FROM users u
+LEFT JOIN user_order o ON u.user_id = o.user_id
+LEFT JOIN like_res lr ON u.user_id = lr.user_id
+LEFT JOIN rate_res rr ON u.user_id = rr.user_id
+WHERE o.user_id IS NULL AND lr.user_id IS NULL AND rr.user_id IS NULL;
